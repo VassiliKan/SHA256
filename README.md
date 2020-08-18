@@ -1,1 +1,1 @@
-# SHA256
+# Java implementation of Secure Hash Algo SHA256
