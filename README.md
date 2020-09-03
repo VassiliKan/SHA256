@@ -75,19 +75,19 @@ of the square roots of the first 8 prime numbers:
 
 For t = 1 to N
 	- construct the 64 blocks Wi from M(t), as explained above
-	- set
-		(a, b, c, d, e, f, g, h) = (H(t−1)1 ,H(t−1)2 ,H(t−1)3 ,H(t−1)4 ,H(t−1)5 , H(t−1)6 ,H(t−1)7 ,H(t−1)8 )  
-	- do 64 rounds consisting of:  
-				T1 = h + 1(e) + Ch(e, f, g) + Ki +Wi  
-				T2 = bigSigma0(a) +Maj(a, b, c)  
-				h = g  
-				g = f  
-				f = e  
-				e = d + T1  
-				d = c  
-				c = b  
-				b = a  
-				a = T1 + T2  
+	- set :   
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(a, b, c, d, e, f, g, h) = (H(t−1)1 ,H(t−1)2 ,H(t−1)3 ,H(t−1)4 ,H(t−1)5 , H(t−1)6 ,H(t−1)7 ,H(t−1)8 )  
+	- do 64 rounds consisting of:   
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;T1 = h + 1(e) + Ch(e, f, g) + Ki +Wi  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;T2 = bigSigma0(a) +Maj(a, b, c)  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;h = g  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;g = f  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;f = e  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;e = d + T1  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;d = c  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;c = b  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b = a  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a = T1 + T2  
 
 1We assume that the length of the message can be represented by a 64-bit integer.
 
