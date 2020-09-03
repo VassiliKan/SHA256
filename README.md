@@ -1,15 +1,15 @@
-# Note : the attached file sha256.java is an implementation of the sha256 algorithm, described below. 
+## Note : the attached file sha256.java is an implementation of the sha256 algorithm, described below. 
 
 All the methods in my implementation come from operations and functions of this document, except the method toNBits. Explanation : Since java cannot easily add two hexadecimal or binary numbers, I had to use the long datatype (also because that's more efficient to use it than converting all the time). However, when I had to convert a number from long to binary, the conversion result wasn't automatically a 32 bits word, a specific condition that is required by the algorithm. Indeed, the result of the Rotr operation on the string "00000000001101010101000101010101" is totally different than if you used "1101010101000101010101", even if these numbers are equal in base 10.
 This method is also usefull in buildWords and paddingMsg methods.
 
-## General description of SHA-256 algorithm (from CRIPTOGRAFIA MAII - FIB pdf)
+# General description of SHA-256 algorithm (from CRIPTOGRAFIA MAII - FIB pdf)
 
 SHA-256 (secure hash algorithm, FIPS 182-2) is a cryptographic hash function with digest length of 256
 bits. It is a keyless hash function; that is, an MDC (Manipulation Detection Code).
 A message is processed by blocks of 512 = 16 × 32 bits, each block requiring 64 rounds.
 
-# Basic operations
+## Basic operations
 
 • Boolean operations AND, XOR and OR, denoted by ^,  and _, respectively.
 • Bitwise complement, denoted by ¯.
@@ -20,7 +20,7 @@ integers written in base 2.
 • ShR(A, n) denotes the right shift of n bits of the binary word A.
 • AkB denotes the concatenation of the binary words A and B.
 
-# Functions and constants
+## Functions and constants
 The algorithm uses the functions:
 
 	- ch(X, Y,Z) = (X ^ Y )  (X ^ Z),
@@ -46,7 +46,7 @@ and the 64 binary words Ki given by the 32 first bits of the fractional parts of
 	0x90befffa 	0xa4506ceb 	0xbef9a3f7 	0xc67178f2
 
 
-# Padding
+## Padding
 To ensure that the message1 has length multiple of 512 bits:
 	• first, a bit 1 is appended,
 	• next, k bits 0 are appended, with k being the smallest positive integer such that l + 1 + k  448
@@ -55,7 +55,7 @@ mod 512, where l is the length in bits of the initial message,
 are added at the end of the message.
 The message shall always be padded, even if the initial length is already a multiple of 512.
 
-# Block decomposition
+## Block decomposition
 
 For each block M 2 {0, 1}512, 64 words of 32 bits each are constructed as follows:
 	• the first 16 are obtained by splitting M in 32-bit blocks
@@ -63,7 +63,7 @@ For each block M 2 {0, 1}512, 64 words of 32 bits each are constructed as follow
 	• the remaining 48 are obtained with the formula:
 	  		Wi = smallSigma1(Wi−2) + Wi−7 + smallSigma0(Wi−15) +Wi−16
 
-# Hash computation
+## Hash computation
 
 • First, eight variables are set to their initial values, given by the first 32 bits of the fractional part
 of the square roots of the first 8 prime numbers:
