@@ -1,18 +1,15 @@
-# Java implementation of Secure Hash Algo SHA256.
+# Note : the attached file sha256.java is an implementation of the sha256 algorithm, described below. 
 
-Execution time for the string "abc" :      9283100 ns.
+All the methods in my implementation come from operations and functions of this document, except the method toNBits. Explanation : Since java cannot easily add two hexadecimal or binary numbers, I had to use the long datatype (also because that's more efficient to use it than converting all the time). However, when I had to convert a number from long to binary, the conversion result wasn't automatically a 32 bits word, a specific condition that is required by the algorithm. Indeed, the result of the Rotr operation on the string "00000000001101010101000101010101" is totally different than if you used "1101010101000101010101", even if these numbers are equal in base 10.
+This method is also usefull in buildWords and paddingMsg methods.
 
-Execution time for a 4020 length string : 95829800 ns.
-
-The cryptographic hash function SHA-256
-
-General description
+## General description of SHA-256 algorithm (from CRIPTOGRAFIA MAII - FIB pdf)
 
 SHA-256 (secure hash algorithm, FIPS 182-2) is a cryptographic hash function with digest length of 256
 bits. It is a keyless hash function; that is, an MDC (Manipulation Detection Code).
 A message is processed by blocks of 512 = 16 × 32 bits, each block requiring 64 rounds.
 
-Basic operations
+# Basic operations
 
 • Boolean operations AND, XOR and OR, denoted by ^,  and _, respectively.
 • Bitwise complement, denoted by ¯.
@@ -23,11 +20,11 @@ integers written in base 2.
 • ShR(A, n) denotes the right shift of n bits of the binary word A.
 • AkB denotes the concatenation of the binary words A and B.
 
-Functions and constants
+# Functions and constants
 The algorithm uses the functions:
 
-	- Ch(X, Y,Z) = (X ^ Y )  (X ^ Z),
-	- Maj(X, Y,Z) = (X ^ Y )  (X ^ Z)  (Y ^ Z),
+	- ch(X, Y,Z) = (X ^ Y )  (X ^ Z),
+	- maj(X, Y,Z) = (X ^ Y )  (X ^ Z)  (Y ^ Z),
 	- bigSigma0(X) = RotR(X, 2)  RotR(X, 13)  RotR(X, 22),
 	- bigSigma1(X) = RotR(X, 6)  RotR(X, 11)  RotR(X, 25),
 	- smallSigma0(X) = RotR(X, 7)  RotR(X, 18)  ShR(X, 3),
@@ -36,20 +33,20 @@ The algorithm uses the functions:
 and the 64 binary words Ki given by the 32 first bits of the fractional parts of the cube roots of the first
 64 prime numbers:
 
-0x428a2f98 	0x71374491 	0xb5c0fbcf 	0xe9b5dba5 	0x3956c25b 	0x59f111f1 
-0x923f82a4 	0xab1c5ed5	0xd807aa98 	0x12835b01 	0x243185be 	0x550c7dc3 
-0x72be5d74 	0x80deb1fe 	0x9bdc06a7 	0xc19bf174	0xe49b69c1 	0xefbe4786 
-0x0fc19dc6 	0x240ca1cc 	0x2de92c6f 	0x4a7484aa 	0x5cb0a9dc 	0x76f988da
-0x983e5152 	0xa831c66d 	0xb00327c8 	0xbf597fc7 	0xc6e00bf3 	0xd5a79147 
-0x06ca6351 	0x14292967	0x27b70a85 	0x2e1b2138 	0x4d2c6dfc 	0x53380d13 
-0x650a7354 	0x766a0abb 	0x81c2c92e 	0x92722c85	0xa2bfe8a1 	0xa81a664b 
-0xc24b8b70 	0xc76c51a3 	0xd192e819 	0xd6990624 	0xf40e3585 	0x106aa070
-0x19a4c116 	0x1e376c08 	0x2748774c 	0x34b0bcb5 	0x391c0cb3 	0x4ed8aa4a 
-0x5b9cca4f 	0x682e6ff3	0x748f82ee 	0x78a5636f 	0x84c87814 	0x8cc70208 
-0x90befffa 	0xa4506ceb 	0xbef9a3f7 	0xc67178f2
+	0x428a2f98 	0x71374491 	0xb5c0fbcf 	0xe9b5dba5 	0x3956c25b 	0x59f111f1 
+	0x923f82a4 	0xab1c5ed5	0xd807aa98 	0x12835b01 	0x243185be 	0x550c7dc3 
+	0x72be5d74 	0x80deb1fe 	0x9bdc06a7 	0xc19bf174	0xe49b69c1 	0xefbe4786 
+	0x0fc19dc6 	0x240ca1cc 	0x2de92c6f 	0x4a7484aa 	0x5cb0a9dc 	0x76f988da
+	0x983e5152 	0xa831c66d 	0xb00327c8 	0xbf597fc7 	0xc6e00bf3 	0xd5a79147 
+	0x06ca6351 	0x14292967	0x27b70a85 	0x2e1b2138 	0x4d2c6dfc 	0x53380d13 
+	0x650a7354 	0x766a0abb 	0x81c2c92e 	0x92722c85	0xa2bfe8a1 	0xa81a664b 
+	0xc24b8b70 	0xc76c51a3 	0xd192e819 	0xd6990624 	0xf40e3585 	0x106aa070
+	0x19a4c116 	0x1e376c08 	0x2748774c 	0x34b0bcb5 	0x391c0cb3 	0x4ed8aa4a 
+	0x5b9cca4f 	0x682e6ff3	0x748f82ee 	0x78a5636f 	0x84c87814 	0x8cc70208 
+	0x90befffa 	0xa4506ceb 	0xbef9a3f7 	0xc67178f2
 
 
-Padding
+# Padding
 To ensure that the message1 has length multiple of 512 bits:
 	• first, a bit 1 is appended,
 	• next, k bits 0 are appended, with k being the smallest positive integer such that l + 1 + k  448
@@ -58,7 +55,7 @@ mod 512, where l is the length in bits of the initial message,
 are added at the end of the message.
 The message shall always be padded, even if the initial length is already a multiple of 512.
 
-Block decomposition
+# Block decomposition
 
 For each block M 2 {0, 1}512, 64 words of 32 bits each are constructed as follows:
 	• the first 16 are obtained by splitting M in 32-bit blocks
@@ -66,7 +63,7 @@ For each block M 2 {0, 1}512, 64 words of 32 bits each are constructed as follow
 	• the remaining 48 are obtained with the formula:
 	  		Wi = smallSigma1(Wi−2) + Wi−7 + smallSigma0(Wi−15) +Wi−16
 
-Hash computation
+# Hash computation
 
 • First, eight variables are set to their initial values, given by the first 32 bits of the fractional part
 of the square roots of the first 8 prime numbers:
@@ -108,9 +105,14 @@ For t = 1 to N
 
 
 
-End for
+End for.
+
 • The hash of the message is the concatenation of the variables HN
 i after the last block has been processed :
 		H = H(N)1|| H(N)2 || H(N)3 || H(N)4 || H(N)5 || H(N)6 || H(N)7 || H(N)8 
     
+    
+Execution time for the string "abc" :      9283100 ns.
+
+Execution time for a 4020 length string : 95829800 ns.
     
