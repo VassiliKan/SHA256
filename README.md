@@ -11,24 +11,24 @@ A message is processed by blocks of 512 = 16 × 32 bits, each block requiring 64
 
 ## Basic operations
 
-• Boolean operations AND, XOR and OR, denoted by ^,  and _, respectively.
-• Bitwise complement, denoted by ¯.
-• Integer addition modulo 2^32, denoted by A + B.
+• Boolean operations AND, XOR and OR, denoted by ^,  and _, respectively.  
+• Bitwise complement, denoted by ¯.  
+• Integer addition modulo 2^32, denoted by A + B.  
   Each of them operates on 32-bit words. For the last operation, binary words are interpreted as
-integers written in base 2.
-• RotR(A, n) denotes the circular right shift of n bits of the binary word A.
-• ShR(A, n) denotes the right shift of n bits of the binary word A.
-• AkB denotes the concatenation of the binary words A and B.
+integers written in base 2.  
+• RotR(A, n) denotes the circular right shift of n bits of the binary word A.  
+• ShR(A, n) denotes the right shift of n bits of the binary word A.  
+• AkB denotes the concatenation of the binary words A and B.  
 
 ## Functions and constants
 The algorithm uses the functions:
 
-	- ch(X, Y,Z) = (X ^ Y )  (X ^ Z),
-	- maj(X, Y,Z) = (X ^ Y )  (X ^ Z)  (Y ^ Z),
-	- bigSigma0(X) = RotR(X, 2)  RotR(X, 13)  RotR(X, 22),
-	- bigSigma1(X) = RotR(X, 6)  RotR(X, 11)  RotR(X, 25),
-	- smallSigma0(X) = RotR(X, 7)  RotR(X, 18)  ShR(X, 3),
-	- smallSigma1(X) = RotR(X, 17)  RotR(X, 19)  ShR(X, 10),
+	- ch(X, Y,Z) = (X ^ Y )  (X ^ Z)  
+	- maj(X, Y,Z) = (X ^ Y )  (X ^ Z)  (Y ^ Z)   
+	- bigSigma0(X) = RotR(X, 2)  RotR(X, 13)  RotR(X, 22)  
+	- bigSigma1(X) = RotR(X, 6)  RotR(X, 11)  RotR(X, 25)  
+	- smallSigma0(X) = RotR(X, 7)  RotR(X, 18)  ShR(X, 3)  
+	- smallSigma1(X) = RotR(X, 17)  RotR(X, 19)  ShR(X, 10)   
 
 and the 64 binary words Ki given by the 32 first bits of the fractional parts of the cube roots of the first
 64 prime numbers:
@@ -48,20 +48,20 @@ and the 64 binary words Ki given by the 32 first bits of the fractional parts of
 
 ## Padding
 To ensure that the message1 has length multiple of 512 bits:
-	• first, a bit 1 is appended,
-	• next, k bits 0 are appended, with k being the smallest positive integer such that l + 1 + k  448
+	• first, a bit 1 is appended,  
+	• next, k bits 0 are appended, with k being the smallest positive integer such that l + 1 + k = 448  
 mod 512, where l is the length in bits of the initial message,
 	• finally, the length l < 264 of the initial message is represented with exactly 64 bits, and these bits
-are added at the end of the message.
+are added at the end of the message.  
 The message shall always be padded, even if the initial length is already a multiple of 512.
 
 ## Block decomposition
 
-For each block M 2 {0, 1}512, 64 words of 32 bits each are constructed as follows:
-	• the first 16 are obtained by splitting M in 32-bit blocks
+For each block M 2 {0, 1}512, 64 words of 32 bits each are constructed as follows:   
+	• the first 16 are obtained by splitting M in 32-bit blocks   
 				M = W1 || W2 ··· || W15 || W16
-	• the remaining 48 are obtained with the formula:
-	  		Wi = smallSigma1(Wi−2) + Wi−7 + smallSigma0(Wi−15) +Wi−16
+	• the remaining 48 are obtained with the formula:   
+	  		Wi = smallSigma1(Wi−2) + Wi−7 + smallSigma0(Wi−15) + Wi−16
 
 ## Hash computation
 
@@ -76,18 +76,18 @@ of the square roots of the first 8 prime numbers:
 For t = 1 to N
 	- construct the 64 blocks Wi from M(t), as explained above
 	- set
-		(a, b, c, d, e, f, g, h) = (H(t−1)1 ,H(t−1)2 ,H(t−1)3 ,H(t−1)4 ,H(t−1)5 , H(t−1)6 ,H(t−1)7 ,H(t−1)8 )
-	- do 64 rounds consisting of:
-				T1 = h + 1(e) + Ch(e, f, g) + Ki +Wi
-				T2 = bigSigma0(a) +Maj(a, b, c)
-				h = g
-				g = f
-				f = e
-				e = d + T1
-				d = c
-				c = b
-				b = a
-				a = T1 + T2
+		(a, b, c, d, e, f, g, h) = (H(t−1)1 ,H(t−1)2 ,H(t−1)3 ,H(t−1)4 ,H(t−1)5 , H(t−1)6 ,H(t−1)7 ,H(t−1)8 )  
+	- do 64 rounds consisting of:  
+				T1 = h + 1(e) + Ch(e, f, g) + Ki +Wi  
+				T2 = bigSigma0(a) +Maj(a, b, c)  
+				h = g  
+				g = f  
+				f = e  
+				e = d + T1  
+				d = c  
+				c = b  
+				b = a  
+				a = T1 + T2  
 
 1We assume that the length of the message can be represented by a 64-bit integer.
 
@@ -108,7 +108,7 @@ For t = 1 to N
 End for.
 
 • The hash of the message is the concatenation of the variables HN
-i after the last block has been processed :
+i after the last block has been processed :  
 		H = H(N)1|| H(N)2 || H(N)3 || H(N)4 || H(N)5 || H(N)6 || H(N)7 || H(N)8 
     
     
